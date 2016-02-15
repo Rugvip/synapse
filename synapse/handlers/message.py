@@ -254,8 +254,7 @@ class MessageHandler(BaseHandler):
 
         if event.type == EventTypes.Message:
             presence = self.hs.get_handlers().presence_handler
-            with PreserveLoggingContext():
-                presence.bump_presence_active_time(user)
+            yield presence.bump_presence_active_time(user)
 
     @defer.inlineCallbacks
     def create_and_send_event(self, event_dict, ratelimit=True,
@@ -688,13 +687,13 @@ class MessageHandler(BaseHandler):
         @defer.inlineCallbacks
         def get_presence():
             states = yield presence_handler.get_states(
-                target_users=[UserID.from_string(m.user_id) for m in room_members],
+                [m.user_id for m in room_members],
                 auth_user=auth_user,
                 as_event=True,
                 check_auth=False,
             )
 
-            defer.returnValue(states.values())
+            defer.returnValue(states)
 
         @defer.inlineCallbacks
         def get_receipts():

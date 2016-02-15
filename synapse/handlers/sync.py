@@ -582,6 +582,11 @@ class SyncHandler(BaseHandler):
             if room_sync:
                 joined.append(room_sync)
 
+        # TODO For each newly joined room, we want to send down presence of
+        # existing users.
+        for room_id in newly_joined_rooms:
+            pass
+
         account_data_for_user = sync_config.filter_collection.filter_account_data(
             self.account_data_for_user(account_data)
         )

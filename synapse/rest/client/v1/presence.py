@@ -87,11 +87,8 @@ class PresenceListRestServlet(ClientV1RestServlet):
             raise SynapseError(400, "Cannot get another user's presence list")
 
         presence = yield self.handlers.presence_handler.get_presence_list(
-            observer_user=user, accepted=True)
-
-        for p in presence:
-            observed_user = p.pop("observed_user")
-            p["user_id"] = observed_user.to_string()
+            observer_user=user, accepted=True
+        )
 
         defer.returnValue((200, presence))
 
