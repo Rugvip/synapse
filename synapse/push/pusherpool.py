@@ -38,7 +38,7 @@ class PusherPool:
         self._start_pushers(pushers)
 
     @defer.inlineCallbacks
-    def add_pusher(self, user_id, access_token, profile_tag, kind, app_id,
+    def add_pusher(self, user_id, access_token, kind, app_id,
                    app_display_name, device_display_name, pushkey, lang, data):
         # we try to create the pusher just to validate the config: it
         # will then get pulled out of the database,
@@ -47,7 +47,6 @@ class PusherPool:
         self._create_pusher({
             "user_name": user_id,
             "kind": kind,
-            "profile_tag": profile_tag,
             "app_id": app_id,
             "app_display_name": app_display_name,
             "device_display_name": device_display_name,
@@ -60,7 +59,7 @@ class PusherPool:
             "failing_since": None
         })
         yield self._add_pusher_to_store(
-            user_id, access_token, profile_tag, kind, app_id,
+            user_id, access_token, kind, app_id,
             app_display_name, device_display_name,
             pushkey, lang, data
         )
@@ -95,13 +94,12 @@ class PusherPool:
                 yield self.remove_pusher(p['app_id'], p['pushkey'], p['user_name'])
 
     @defer.inlineCallbacks
-    def _add_pusher_to_store(self, user_id, access_token, profile_tag, kind,
+    def _add_pusher_to_store(self, user_id, access_token, kind,
                              app_id, app_display_name, device_display_name,
                              pushkey, lang, data):
         yield self.store.add_pusher(
             user_id=user_id,
             access_token=access_token,
-            profile_tag=profile_tag,
             kind=kind,
             app_id=app_id,
             app_display_name=app_display_name,
@@ -117,7 +115,6 @@ class PusherPool:
         if pusherdict['kind'] == 'http':
             return HttpPusher(
                 self.hs,
-                profile_tag=pusherdict['profile_tag'],
                 user_id=pusherdict['user_name'],
                 app_id=pusherdict['app_id'],
                 app_display_name=pusherdict['app_display_name'],
