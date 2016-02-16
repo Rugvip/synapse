@@ -299,17 +299,6 @@ def _add_empty_priority_class_arrays(d):
     return d
 
 
-def _profile_tag_from_conditions(conditions):
-    """
-    Given a list of conditions, return the profile tag of the
-    device rule if there is one
-    """
-    for c in conditions:
-        if c['kind'] == 'device':
-            return c['profile_tag']
-    return None
-
-
 def _filter_ruleset_with_path(ruleset, path):
     if path == []:
         raise UnrecognizedRequestError(
