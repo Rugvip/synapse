@@ -392,8 +392,7 @@ def _namespaced_rule_id_from_spec(spec):
 
 
 def _namespaced_rule_id(spec, rule_id):
-    scope = 'global'
-    return "%s/%s/%s" % (scope, spec['template'], rule_id)
+    return "global/%s/%s" % (spec['template'], rule_id)
 
 
 def _rule_id_from_namespaced(in_rule_id):
